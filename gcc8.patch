@@ -1,0 +1,26 @@
+From 2d5dd802386d78117d5ed9ddcbf8bc22ab3cb461 Mon Sep 17 00:00:00 2001
+From: Daniel Schemmel <daniel.schemmel@comsys.rwth-aachen.de>
+Date: Mon, 7 May 2018 23:33:04 +0200
+Subject: [PATCH 1/1] The Permutation Matrix' `values` function attempted an
+ incorrect conversion. This causes compilation with GCC 8 to fail. I suspect
+ it worked previously due to SFINAE.
+
+---
+ src/util/lp/permutation_matrix.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/util/lp/permutation_matrix.h b/src/util/lp/permutation_matrix.h
+index 3c89b3646..8e664bba0 100644
+--- a/src/util/lp/permutation_matrix.h
++++ b/src/util/lp/permutation_matrix.h
+@@ -132,7 +132,7 @@ class permutation_matrix : public tail_matrix<T, X> {
+ 
+         unsigned size() const { return static_cast<unsigned>(m_rev.size()); }
+ 
+-        unsigned * values() const { return m_permutation; }
++        unsigned * values() const { return m_permutation.c_ptr(); }
+ 
+         void resize(unsigned size) {
+             unsigned old_size = m_permutation.size();
+-- 
+2.16.3

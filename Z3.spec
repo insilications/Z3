@@ -4,7 +4,7 @@
 #
 Name     : Z3
 Version  : 4.6.0
-Release  : 2
+Release  : 3
 URL      : https://github.com/Z3Prover/z3/archive/z3-4.6.0.tar.gz
 Source0  : https://github.com/Z3Prover/z3/archive/z3-4.6.0.tar.gz
 Summary  : .NET bindings for The Microsoft Z3 SMT solver
@@ -18,6 +18,7 @@ BuildRequires : pip
 BuildRequires : python-dev
 BuildRequires : python3-dev
 BuildRequires : setuptools
+Patch1: gcc8.patch
 
 %description
 muZ: routines related to solving satisfiability of Horn clauses and
@@ -52,13 +53,14 @@ lib components for the Z3 package.
 
 %prep
 %setup -q -n z3-z3-4.6.0
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1520961091
+export SOURCE_DATE_EPOCH=1526008842
 mkdir clr-build
 pushd clr-build
 cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS:BOOL=ON -DLIB_INSTALL_DIR:PATH=/usr/lib64 -DCMAKE_AR=/usr/bin/gcc-ar -DLIB_SUFFIX=64 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_RANLIB=/usr/bin/gcc-ranlib
@@ -66,7 +68,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1520961091
+export SOURCE_DATE_EPOCH=1526008842
 rm -rf %{buildroot}
 pushd clr-build
 %make_install
