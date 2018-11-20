@@ -1,5 +1,6 @@
 libz3.so.4.8:Z3_add_const_interp
 libz3.so.4.8:Z3_add_func_interp
+libz3.so.4.8:Z3_add_rec_def
 libz3.so.4.8:Z3_algebraic_add
 libz3.so.4.8:Z3_algebraic_div
 libz3.so.4.8:Z3_algebraic_eq
@@ -171,6 +172,7 @@ libz3.so.4.8:Z3_get_index_value
 libz3.so.4.8:Z3_get_num_probes
 libz3.so.4.8:Z3_get_num_tactics
 libz3.so.4.8:Z3_get_numeral_decimal_string
+libz3.so.4.8:Z3_get_numeral_double
 libz3.so.4.8:Z3_get_numeral_int
 libz3.so.4.8:Z3_get_numeral_int64
 libz3.so.4.8:Z3_get_numeral_rational
@@ -444,6 +446,7 @@ libz3.so.4.8:Z3_mk_re_union
 libz3.so.4.8:Z3_mk_real
 libz3.so.4.8:Z3_mk_real2int
 libz3.so.4.8:Z3_mk_real_sort
+libz3.so.4.8:Z3_mk_rec_func_decl
 libz3.so.4.8:Z3_mk_rem
 libz3.so.4.8:Z3_mk_repeat
 libz3.so.4.8:Z3_mk_rotate_left
