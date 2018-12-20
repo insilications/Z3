@@ -675,4 +675,3 @@ libz3.so.4.8:Z3_toggle_warning_messages
 libz3.so.4.8:Z3_translate
 libz3.so.4.8:Z3_update_param_value
 libz3.so.4.8:Z3_update_term
-libz3.so.4.8:_Z14Z3_get_managerP11_Z3_context
