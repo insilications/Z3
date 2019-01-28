@@ -4,10 +4,10 @@
 #
 Name     : Z3
 Version  : 4.8.4
-Release  : 12
+Release  : 13
 URL      : https://github.com/Z3Prover/z3/archive/z3-4.8.4.tar.gz
 Source0  : https://github.com/Z3Prover/z3/archive/z3-4.8.4.tar.gz
-Summary  : .NET bindings for The Microsoft Z3 SMT solver
+Summary  : High-performance theorem prover
 Group    : Development/Tools
 License  : MIT
 Requires: Z3-bin = %{version}-%{release}
@@ -24,8 +24,11 @@ BuildRequires : openjdk9-dev
 BuildRequires : python3
 
 %description
-muZ: routines related to solving satisfiability of Horn clauses and
-solving Datalog programs.
+In order to use Z3 MSF plugin, follow the following steps:
+1. Compile latest Z3 .NET API (from any branch consisting of opt features) and copy 'libz3.dll' and 'Microsoft.Z3.dll' to the folder of 'Z3MSFPlugin.sln'.
+2. Retrieve 'Microsoft.Solver.Foundation.dll' from http://archive.msdn.microsoft.com/solverfoundation/Release/ProjectReleases.aspx?ReleaseId=1799,
+preferably using DLL only version. Copy 'Microsoft.Solver.Foundation.dll' to the folder of 'Z3MSFPlugin.sln'
+3. Build 'Z3MSFPlugin.sln'. Note that you have to compile using x86 target for Microsoft.Z3.dll 32-bit and x64 target for Microsoft.Z3.dll 64-bit.
 
 %package bin
 Summary: bin components for the Z3 package.
@@ -66,41 +69,24 @@ license components for the Z3 package.
 
 %prep
 %setup -q -n z3-z3-4.8.4
-pushd ..
-cp -a z3-z3-4.8.4 buildavx2
-popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1545342070
+export SOURCE_DATE_EPOCH=1548687499
 mkdir -p clr-build
 pushd clr-build
 %cmake ..
 make  %{?_smp_mflags}
 popd
-mkdir -p clr-build-avx2
-pushd clr-build-avx2
-export CFLAGS="$CFLAGS -O3 -march=haswell "
-export FCFLAGS="$CFLAGS -O3 -march=haswell "
-export FFLAGS="$CFLAGS -O3 -march=haswell "
-export CXXFLAGS="$CXXFLAGS -O3 -march=haswell "
-export CFLAGS="$CFLAGS -march=haswell -m64"
-export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
-%cmake ..
-make  %{?_smp_mflags}
-popd
 
 %install
-export SOURCE_DATE_EPOCH=1545342070
+export SOURCE_DATE_EPOCH=1548687499
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/Z3
 cp LICENSE.txt %{buildroot}/usr/share/package-licenses/Z3/LICENSE.txt
-pushd clr-build-avx2
-%make_install_avx2  || :
-popd
 pushd clr-build
 %make_install
 popd
@@ -110,7 +96,6 @@ popd
 
 %files bin
 %defattr(-,root,root,-)
-/usr/bin/haswell/z3
 /usr/bin/z3
 
 %files dev
@@ -119,13 +104,10 @@ popd
 /usr/lib64/cmake/z3/Z3Config.cmake
 /usr/lib64/cmake/z3/Z3Targets-relwithdebinfo.cmake
 /usr/lib64/cmake/z3/Z3Targets.cmake
-/usr/lib64/haswell/libz3.so
 /usr/lib64/libz3.so
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/haswell/libz3.so.4.8
-/usr/lib64/haswell/libz3.so.4.8.4.0
 /usr/lib64/libz3.so.4.8
 /usr/lib64/libz3.so.4.8.4.0
 
