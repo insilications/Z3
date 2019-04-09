@@ -4,10 +4,10 @@
 #
 Name     : Z3
 Version  : 4.8.4
-Release  : 13
+Release  : 14
 URL      : https://github.com/Z3Prover/z3/archive/z3-4.8.4.tar.gz
 Source0  : https://github.com/Z3Prover/z3/archive/z3-4.8.4.tar.gz
-Summary  : High-performance theorem prover
+Summary  : .NET bindings for The Microsoft Z3 SMT solver
 Group    : Development/Tools
 License  : MIT
 Requires: Z3-bin = %{version}-%{release}
@@ -17,18 +17,20 @@ BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
 BuildRequires : cmake
 BuildRequires : doxygen
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
 BuildRequires : git
 BuildRequires : glibc-dev
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : openjdk9
 BuildRequires : openjdk9-dev
 BuildRequires : python3
 
 %description
-In order to use Z3 MSF plugin, follow the following steps:
-1. Compile latest Z3 .NET API (from any branch consisting of opt features) and copy 'libz3.dll' and 'Microsoft.Z3.dll' to the folder of 'Z3MSFPlugin.sln'.
-2. Retrieve 'Microsoft.Solver.Foundation.dll' from http://archive.msdn.microsoft.com/solverfoundation/Release/ProjectReleases.aspx?ReleaseId=1799,
-preferably using DLL only version. Copy 'Microsoft.Solver.Foundation.dll' to the folder of 'Z3MSFPlugin.sln'
-3. Build 'Z3MSFPlugin.sln'. Note that you have to compile using x86 target for Microsoft.Z3.dll 32-bit and x64 target for Microsoft.Z3.dll 64-bit.
+muZ: routines related to solving satisfiability of Horn clauses and
+solving Datalog programs.
 
 %package bin
 Summary: bin components for the Z3 package.
@@ -45,9 +47,21 @@ Group: Development
 Requires: Z3-lib = %{version}-%{release}
 Requires: Z3-bin = %{version}-%{release}
 Provides: Z3-devel = %{version}-%{release}
+Requires: Z3 = %{version}-%{release}
 
 %description dev
 dev components for the Z3 package.
+
+
+%package dev32
+Summary: dev32 components for the Z3 package.
+Group: Default
+Requires: Z3-lib32 = %{version}-%{release}
+Requires: Z3-bin = %{version}-%{release}
+Requires: Z3-dev = %{version}-%{release}
+
+%description dev32
+dev32 components for the Z3 package.
 
 
 %package lib
@@ -57,6 +71,15 @@ Requires: Z3-license = %{version}-%{release}
 
 %description lib
 lib components for the Z3 package.
+
+
+%package lib32
+Summary: lib32 components for the Z3 package.
+Group: Default
+Requires: Z3-license = %{version}-%{release}
+
+%description lib32
+lib32 components for the Z3 package.
 
 
 %package license
@@ -75,18 +98,40 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1548687499
+export SOURCE_DATE_EPOCH=1554844207
 mkdir -p clr-build
 pushd clr-build
+export LDFLAGS="${LDFLAGS} -fno-lto"
 %cmake ..
-make  %{?_smp_mflags}
+make  %{?_smp_mflags} VERBOSE=1
+popd
+mkdir -p clr-build32
+pushd clr-build32
+export LDFLAGS="${LDFLAGS} -fno-lto"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+%cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 ..
+make  %{?_smp_mflags} VERBOSE=1
+unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1548687499
+export SOURCE_DATE_EPOCH=1554844207
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/Z3
 cp LICENSE.txt %{buildroot}/usr/share/package-licenses/Z3/LICENSE.txt
+pushd clr-build32
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 pushd clr-build
 %make_install
 popd
@@ -106,10 +151,22 @@ popd
 /usr/lib64/cmake/z3/Z3Targets.cmake
 /usr/lib64/libz3.so
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/cmake/z3/Z3Config.cmake
+/usr/lib32/cmake/z3/Z3Targets-relwithdebinfo.cmake
+/usr/lib32/cmake/z3/Z3Targets.cmake
+/usr/lib32/libz3.so
+
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libz3.so.4.8
 /usr/lib64/libz3.so.4.8.4.0
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libz3.so.4.8
+/usr/lib32/libz3.so.4.8.4.0
 
 %files license
 %defattr(0644,root,root,0755)
