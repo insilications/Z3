@@ -84,8 +84,6 @@ libz3.so.4.8:Z3_fixedpoint_get_rules_along_trace
 libz3.so.4.8:Z3_fixedpoint_get_statistics
 libz3.so.4.8:Z3_fixedpoint_inc_ref
 libz3.so.4.8:Z3_fixedpoint_init
-libz3.so.4.8:Z3_fixedpoint_pop
-libz3.so.4.8:Z3_fixedpoint_push
 libz3.so.4.8:Z3_fixedpoint_query
 libz3.so.4.8:Z3_fixedpoint_query_from_lvl
 libz3.so.4.8:Z3_fixedpoint_query_relations
@@ -162,13 +160,13 @@ libz3.so.4.8:Z3_get_domain
 libz3.so.4.8:Z3_get_domain_size
 libz3.so.4.8:Z3_get_error_code
 libz3.so.4.8:Z3_get_error_msg
-libz3.so.4.8:Z3_get_error_msg_ex
 libz3.so.4.8:Z3_get_estimated_alloc_size
 libz3.so.4.8:Z3_get_finite_domain_sort_size
 libz3.so.4.8:Z3_get_full_version
 libz3.so.4.8:Z3_get_func_decl_id
 libz3.so.4.8:Z3_get_implied_equalities
 libz3.so.4.8:Z3_get_index_value
+libz3.so.4.8:Z3_get_lstring
 libz3.so.4.8:Z3_get_num_probes
 libz3.so.4.8:Z3_get_num_tactics
 libz3.so.4.8:Z3_get_numeral_decimal_string
@@ -195,8 +193,10 @@ libz3.so.4.8:Z3_get_quantifier_num_patterns
 libz3.so.4.8:Z3_get_quantifier_pattern_ast
 libz3.so.4.8:Z3_get_quantifier_weight
 libz3.so.4.8:Z3_get_range
+libz3.so.4.8:Z3_get_re_sort_basis
 libz3.so.4.8:Z3_get_relation_arity
 libz3.so.4.8:Z3_get_relation_column
+libz3.so.4.8:Z3_get_seq_sort_basis
 libz3.so.4.8:Z3_get_sort
 libz3.so.4.8:Z3_get_sort_id
 libz3.so.4.8:Z3_get_sort_kind
@@ -410,7 +410,9 @@ libz3.so.4.8:Z3_mk_ite
 libz3.so.4.8:Z3_mk_lambda
 libz3.so.4.8:Z3_mk_lambda_const
 libz3.so.4.8:Z3_mk_le
+libz3.so.4.8:Z3_mk_linear_order
 libz3.so.4.8:Z3_mk_list_sort
+libz3.so.4.8:Z3_mk_lstring
 libz3.so.4.8:Z3_mk_lt
 libz3.so.4.8:Z3_mk_map
 libz3.so.4.8:Z3_mk_mod
@@ -421,10 +423,12 @@ libz3.so.4.8:Z3_mk_numeral
 libz3.so.4.8:Z3_mk_optimize
 libz3.so.4.8:Z3_mk_or
 libz3.so.4.8:Z3_mk_params
+libz3.so.4.8:Z3_mk_partial_order
 libz3.so.4.8:Z3_mk_pattern
 libz3.so.4.8:Z3_mk_pbeq
 libz3.so.4.8:Z3_mk_pbge
 libz3.so.4.8:Z3_mk_pble
+libz3.so.4.8:Z3_mk_piecewise_linear_order
 libz3.so.4.8:Z3_mk_power
 libz3.so.4.8:Z3_mk_probe
 libz3.so.4.8:Z3_mk_quantifier
@@ -460,7 +464,9 @@ libz3.so.4.8:Z3_mk_seq_empty
 libz3.so.4.8:Z3_mk_seq_extract
 libz3.so.4.8:Z3_mk_seq_in_re
 libz3.so.4.8:Z3_mk_seq_index
+libz3.so.4.8:Z3_mk_seq_last_index
 libz3.so.4.8:Z3_mk_seq_length
+libz3.so.4.8:Z3_mk_seq_nth
 libz3.so.4.8:Z3_mk_seq_prefix
 libz3.so.4.8:Z3_mk_seq_replace
 libz3.so.4.8:Z3_mk_seq_sort
@@ -471,6 +477,7 @@ libz3.so.4.8:Z3_mk_set_add
 libz3.so.4.8:Z3_mk_set_complement
 libz3.so.4.8:Z3_mk_set_del
 libz3.so.4.8:Z3_mk_set_difference
+libz3.so.4.8:Z3_mk_set_has_size
 libz3.so.4.8:Z3_mk_set_intersect
 libz3.so.4.8:Z3_mk_set_member
 libz3.so.4.8:Z3_mk_set_sort
@@ -489,6 +496,8 @@ libz3.so.4.8:Z3_mk_string_sort
 libz3.so.4.8:Z3_mk_string_symbol
 libz3.so.4.8:Z3_mk_sub
 libz3.so.4.8:Z3_mk_tactic
+libz3.so.4.8:Z3_mk_transitive_closure
+libz3.so.4.8:Z3_mk_tree_order
 libz3.so.4.8:Z3_mk_true
 libz3.so.4.8:Z3_mk_tuple_sort
 libz3.so.4.8:Z3_mk_unary_minus
@@ -515,6 +524,7 @@ libz3.so.4.8:Z3_model_to_string
 libz3.so.4.8:Z3_model_translate
 libz3.so.4.8:Z3_open_log
 libz3.so.4.8:Z3_optimize_assert
+libz3.so.4.8:Z3_optimize_assert_and_track
 libz3.so.4.8:Z3_optimize_assert_soft
 libz3.so.4.8:Z3_optimize_check
 libz3.so.4.8:Z3_optimize_dec_ref
@@ -619,6 +629,7 @@ libz3.so.4.8:Z3_solver_from_string
 libz3.so.4.8:Z3_solver_get_assertions
 libz3.so.4.8:Z3_solver_get_consequences
 libz3.so.4.8:Z3_solver_get_help
+libz3.so.4.8:Z3_solver_get_levels
 libz3.so.4.8:Z3_solver_get_model
 libz3.so.4.8:Z3_solver_get_non_units
 libz3.so.4.8:Z3_solver_get_num_scopes
@@ -626,6 +637,7 @@ libz3.so.4.8:Z3_solver_get_param_descrs
 libz3.so.4.8:Z3_solver_get_proof
 libz3.so.4.8:Z3_solver_get_reason_unknown
 libz3.so.4.8:Z3_solver_get_statistics
+libz3.so.4.8:Z3_solver_get_trail
 libz3.so.4.8:Z3_solver_get_units
 libz3.so.4.8:Z3_solver_get_unsat_core
 libz3.so.4.8:Z3_solver_import_model_converter
@@ -634,6 +646,7 @@ libz3.so.4.8:Z3_solver_pop
 libz3.so.4.8:Z3_solver_push
 libz3.so.4.8:Z3_solver_reset
 libz3.so.4.8:Z3_solver_set_params
+libz3.so.4.8:Z3_solver_to_dimacs_string
 libz3.so.4.8:Z3_solver_to_string
 libz3.so.4.8:Z3_solver_translate
 libz3.so.4.8:Z3_sort_to_ast
@@ -675,3 +688,4 @@ libz3.so.4.8:Z3_toggle_warning_messages
 libz3.so.4.8:Z3_translate
 libz3.so.4.8:Z3_update_param_value
 libz3.so.4.8:Z3_update_term
+libz3.so.4.8:_ZNSt14_Function_base13_Base_managerIZN2lp10hnf_cutter14initialize_rowEjEUljE_E10_M_managerERSt9_Any_dataRKS5_St18_Manager_operation
