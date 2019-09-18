@@ -4,7 +4,7 @@
 #
 Name     : Z3
 Version  : 4.8.5
-Release  : 18
+Release  : 19
 URL      : https://github.com/Z3Prover/z3/archive/Z3-4.8.5/z3-4.8.5.tar.gz
 Source0  : https://github.com/Z3Prover/z3/archive/Z3-4.8.5/z3-4.8.5.tar.gz
 Summary  : .NET bindings for The Microsoft Z3 SMT solver
@@ -98,7 +98,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564001147
+export SOURCE_DATE_EPOCH=1568836966
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -110,7 +110,7 @@ export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %cmake ..
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 mkdir -p clr-build32
 pushd clr-build32
@@ -124,16 +124,16 @@ export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %cmake -DLIB_INSTALL_DIR:PATH=/usr/lib32 -DCMAKE_INSTALL_LIBDIR=/usr/lib32 -DLIB_SUFFIX=32 ..
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1564001147
+export SOURCE_DATE_EPOCH=1568836966
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/Z3
 cp LICENSE.txt %{buildroot}/usr/share/package-licenses/Z3/LICENSE.txt
@@ -159,7 +159,20 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
+/usr/include/z3++.h
+/usr/include/z3.h
+/usr/include/z3_algebraic.h
+/usr/include/z3_api.h
+/usr/include/z3_ast_containers.h
+/usr/include/z3_fixedpoint.h
+/usr/include/z3_fpa.h
+/usr/include/z3_macros.h
+/usr/include/z3_optimization.h
+/usr/include/z3_polynomial.h
+/usr/include/z3_rcf.h
+/usr/include/z3_spacer.h
+/usr/include/z3_v1.h
+/usr/include/z3_version.h
 /usr/lib64/cmake/z3/Z3Config.cmake
 /usr/lib64/cmake/z3/Z3Targets-relwithdebinfo.cmake
 /usr/lib64/cmake/z3/Z3Targets.cmake
