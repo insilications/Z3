@@ -490,6 +490,8 @@ libz3.so.4.8:Z3_mk_solver_for_logic
 libz3.so.4.8:Z3_mk_solver_from_tactic
 libz3.so.4.8:Z3_mk_store
 libz3.so.4.8:Z3_mk_store_n
+libz3.so.4.8:Z3_mk_str_le
+libz3.so.4.8:Z3_mk_str_lt
 libz3.so.4.8:Z3_mk_str_to_int
 libz3.so.4.8:Z3_mk_string
 libz3.so.4.8:Z3_mk_string_sort
