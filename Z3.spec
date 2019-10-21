@@ -4,10 +4,10 @@
 #
 Name     : Z3
 Version  : 4.8.6
-Release  : 20
+Release  : 21
 URL      : https://github.com/Z3Prover/z3/archive/z3-4.8.6/z3-4.8.6.tar.gz
 Source0  : https://github.com/Z3Prover/z3/archive/z3-4.8.6/z3-4.8.6.tar.gz
-Summary  : High-performance theorem prover
+Summary  : .NET bindings for The Microsoft Z3 SMT solver
 Group    : Development/Tools
 License  : MIT
 Requires: Z3-bin = %{version}-%{release}
@@ -23,16 +23,12 @@ BuildRequires : git
 BuildRequires : glibc-dev
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
-BuildRequires : openjdk11
-BuildRequires : openjdk11-dev
 BuildRequires : python3
+BuildRequires : util-linux
 
 %description
-In order to use Z3 MSF plugin, follow the following steps:
-1. Compile latest Z3 .NET API (from any branch consisting of opt features) and copy 'libz3.dll' and 'Microsoft.Z3.dll' to the folder of 'Z3MSFPlugin.sln'.
-2. Retrieve 'Microsoft.Solver.Foundation.dll' from http://archive.msdn.microsoft.com/solverfoundation/Release/ProjectReleases.aspx?ReleaseId=1799,
-preferably using DLL only version. Copy 'Microsoft.Solver.Foundation.dll' to the folder of 'Z3MSFPlugin.sln'
-3. Build 'Z3MSFPlugin.sln'. Note that you have to compile using x86 target for Microsoft.Z3.dll 32-bit and x64 target for Microsoft.Z3.dll 64-bit.
+muZ: routines related to solving satisfiability of Horn clauses and
+solving Datalog programs.
 
 %package bin
 Summary: bin components for the Z3 package.
@@ -49,7 +45,6 @@ Group: Development
 Requires: Z3-lib = %{version}-%{release}
 Requires: Z3-bin = %{version}-%{release}
 Provides: Z3-devel = %{version}-%{release}
-Requires: Z3 = %{version}-%{release}
 Requires: Z3 = %{version}-%{release}
 
 %description dev
@@ -101,10 +96,9 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568951108
+export SOURCE_DATE_EPOCH=1571694516
 mkdir -p clr-build
 pushd clr-build
-# -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -118,7 +112,6 @@ make  %{?_smp_mflags}  VERBOSE=1
 popd
 mkdir -p clr-build32
 pushd clr-build32
-# -Werror is for werrorists
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -138,10 +131,10 @@ unset PKG_CONFIG_PATH
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1568951108
+export SOURCE_DATE_EPOCH=1571694516
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/Z3
-cp LICENSE.txt %{buildroot}/usr/share/package-licenses/Z3/LICENSE.txt
+cp %{_builddir}/z3-z3-4.8.6/LICENSE.txt %{buildroot}/usr/share/package-licenses/Z3/dad4e766bd1dda39916ad6d99a48f02c6884438a
 pushd clr-build32
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -204,4 +197,4 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/Z3/LICENSE.txt
+/usr/share/package-licenses/Z3/dad4e766bd1dda39916ad6d99a48f02c6884438a
