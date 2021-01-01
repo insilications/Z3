@@ -1,0 +1,3 @@
+pushd clr-build
+ctest -V || : 
+popd

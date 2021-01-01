@@ -1,5 +1,5 @@
 PKG_NAME := Z3
-URL = https://github.com/Z3Prover/z3/archive/z3-4.8.9/z3-4.8.9.tar.gz
+URL = https://github.com/Z3Prover/z3.git
 ARCHIVES = 
 
 include ../common/Makefile.common
